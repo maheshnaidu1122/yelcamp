@@ -166,8 +166,10 @@ app.use('/campground', camprouter);
 app.use('/campground/:id/reviews', revrouter);
 
 app.get('/', (req, res) => {
-    res.render('home')
+    console.log('Root route hit');
+    res.render('home');
 });
+
 // Error handling middleware
 app.use((err, req, res, next) => {
     const { statusCode = 500, message = "Something went wrong!" } = err;
