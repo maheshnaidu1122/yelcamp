@@ -1,11 +1,7 @@
 // Load environment variables in non-production environments
-if(process.env.NODE_ENV !== "production") {
+if (process.env.NODE_ENV !== "production") {
     require('dotenv').config();
 }
-
-console.log(process.env.CLOUDINARY_CLOUD_NAME); // Should output your cloud name
-console.log(process.env.CLOUDINARY_KEY);        // Should output your API key
-console.log(process.env.CLOUDINARY_SECRET);     // Should output your API secret
 
 // Import required modules
 const express = require('express');
@@ -25,10 +21,10 @@ const userrouter = require('./routes/users');
 const Sanitize = require('express-mongo-sanitize');
 const helmet = require('helmet');
 const MongoStore = require('connect-mongo');
+
 // MongoDB connection URL
 const dbUrl = 'mongodb://127.0.0.1:27017/yelp-camp';  // Use 127.0.0.1 (IPv4 address)
 
-// Connect to MongoDB
 // Connect to MongoDB
 mongoose.connect(dbUrl, {
     useNewUrlParser: true,
@@ -40,7 +36,6 @@ db.on("error", console.error.bind(console, "connection error:"));
 db.once("open", () => {
     console.log("Database connected");
 });
-
 
 // Set up view engine and static files
 app.engine('ejs', ejsMate);
@@ -153,7 +148,7 @@ passport.deserializeUser(async (id, done) => {
 
 // Middleware for passing flash messages and user info to views
 app.use((req, res, next) => {
-    res.locals.returnTo;
+    res.locals.returnTo = req.session.returnTo;
     res.locals.currentUser = req.user;
     res.locals.success = req.flash('success');
     res.locals.error = req.flash('error');
@@ -165,9 +160,10 @@ app.use('/', userrouter);
 app.use('/campground', camprouter);
 app.use('/campground/:id/reviews', revrouter);
 
+// Home route
 app.get('/', (req, res) => {
     console.log('Root route hit');
-    res.render('home');
+    res.render('home');  // Make sure home.ejs exists in your 'views' directory
 });
 
 // Error handling middleware
