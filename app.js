@@ -161,9 +161,10 @@ app.use((req, res, next) => {
 });
 
 // Route handlers
+app.use('/', userrouter);
 app.use('/campground', camprouter);
 app.use('/campground/:id/reviews', revrouter);
-app.use('/', userrouter);
+
 app.get('/', (req, res) => {
     res.render('home')
 });
